@@ -9,7 +9,21 @@ import staffRoutes from "./routes/staffRoutes.js";
 
 const app = express();
 
-app.use(cors({ origin: env.clientOrigin }));
+app.use(
+	cors({
+		origin: (origin, callback) => {
+			if (!origin) {
+				return callback(null, true);
+			}
+
+			if (env.clientOrigins.includes(origin)) {
+				return callback(null, true);
+			}
+
+			return callback(new Error("CORS blocked for this origin"));
+		}
+	})
+);
 app.use(express.json());
 
 app.use("/api", healthRoutes);
