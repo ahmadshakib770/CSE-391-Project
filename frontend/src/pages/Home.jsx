@@ -2,23 +2,27 @@ import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
-    <div className="centered minimal-home">
-      <h1>ResApp</h1>
-
-      <section className="auth-actions">
-        <h2>Owner</h2>
-        <div className="row">
-          <Link to="/owner/login" className="card-link btn-like">Owner Sign In</Link>
-          <Link to="/owner/register" className="card-link btn-like">Owner Sign Up</Link>
-        </div>
+    <div className="centered landing-wrap">
+      <section className="landing-hero card-panel">
+        <h1 className="brand-title">TableEase</h1>
       </section>
 
-      <section className="auth-actions">
-        <h2>Staff</h2>
-        <div className="row">
-          <Link to="/staff/login" className="card-link btn-like">Staff Sign In</Link>
-          <Link to="/staff/register" className="card-link btn-like">Staff Sign Up</Link>
-        </div>
+      <section className="portal-grid">
+        <article className="portal-column card-panel">
+          <h2>Owner Portal</h2>
+          <div className="stack-actions">
+            <Link to="/owner/login" className="btn btn-primary">Owner Sign In</Link>
+            <Link to="/owner/register" className="btn btn-secondary">Owner Sign Up</Link>
+          </div>
+        </article>
+
+        <article className="portal-column card-panel">
+          <h2>Staff Portal</h2>
+          <div className="stack-actions">
+            <Link to="/staff/login" className="btn btn-primary">Staff Sign In</Link>
+            <Link to="/staff/register" className="btn btn-secondary">Staff Sign Up</Link>
+          </div>
+        </article>
       </section>
     </div>
   );

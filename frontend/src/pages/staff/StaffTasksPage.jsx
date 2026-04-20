@@ -29,9 +29,11 @@ const StaffTasksPage = () => {
   };
 
   return (
-    <section>
-      <p className="eyebrow">Daily Workflow</p>
-      <h2>My Tasks</h2>
+    <section className="page-section">
+      <header className="section-header">
+        <p className="eyebrow">Daily Workflow</p>
+        <h2>My Tasks</h2>
+      </header>
       {error ? <p className="error">{error}</p> : null}
       <div className="grid">
         {tasks.map((task) => (

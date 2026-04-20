@@ -8,9 +8,8 @@ const DashboardLayout = ({ title, links }) => {
     <div className="shell">
       <aside className="sidebar">
         <div className="brand-block">
-          <p className="eyebrow">Restaurant Management</p>
+          {user?.role === "owner" ? <p className="eyebrow">Restaurant Admin</p> : null}
           <h2>{title}</h2>
-          <p className="muted">{user?.name}</p>
         </div>
         {user?.role === "staff" && user?.shift ? (
           <div className="shift-box">
@@ -38,14 +37,9 @@ const DashboardLayout = ({ title, links }) => {
         </button>
       </aside>
       <main className="content">
-        <header className="content-topbar">
-          <div>
-            <p className="eyebrow">Dashboard</p>
-            <h1>{title}</h1>
-          </div>
-          <span className="role-pill">{user?.role}</span>
-        </header>
-        <Outlet />
+        <section className="workspace-panel">
+          <Outlet />
+        </section>
       </main>
     </div>
   );

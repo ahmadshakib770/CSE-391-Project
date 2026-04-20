@@ -7,9 +7,14 @@ import OwnerRegister from "./pages/auth/OwnerRegister";
 import StaffLogin from "./pages/auth/StaffLogin";
 import StaffRegister from "./pages/auth/StaffRegister";
 import OwnerDashboard from "./pages/owner/OwnerDashboard";
+import OwnerMenuPage from "./pages/owner/OwnerMenuPage";
+import OwnerOrderTrackingPage from "./pages/owner/OwnerOrderTrackingPage";
+import OwnerSalesReportPage from "./pages/owner/OwnerSalesReportPage";
+import OwnerStaffDetailsPage from "./pages/owner/OwnerStaffDetailsPage";
 import OwnerStaffPage from "./pages/owner/OwnerStaffPage";
 import OwnerTasksPage from "./pages/owner/OwnerTasksPage";
 import StaffDashboard from "./pages/staff/StaffDashboard";
+import StaffOrderListPage from "./pages/staff/StaffOrderListPage";
 import StaffOrdersPage from "./pages/staff/StaffOrdersPage";
 import StaffTasksPage from "./pages/staff/StaffTasksPage";
 
@@ -38,7 +43,11 @@ const App = () => {
         }
       >
         <Route index element={<OwnerStaffPage />} />
+        <Route path="staff/:staffId" element={<OwnerStaffDetailsPage />} />
+        <Route path="orders" element={<OwnerOrderTrackingPage />} />
+        <Route path="menu" element={<OwnerMenuPage />} />
         <Route path="tasks" element={<OwnerTasksPage />} />
+        <Route path="sales-report" element={<OwnerSalesReportPage />} />
       </Route>
 
       <Route
@@ -50,6 +59,7 @@ const App = () => {
         }
       >
         <Route index element={<StaffOrdersPage />} />
+        <Route path="orders" element={<StaffOrderListPage />} />
         <Route path="tasks" element={<StaffTasksPage />} />
       </Route>
 

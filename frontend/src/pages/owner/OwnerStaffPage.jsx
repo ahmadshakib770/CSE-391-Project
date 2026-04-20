@@ -1,9 +1,24 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import api from "../../api/client";
+
+const normalizeText = (value) => String(value || "").toLowerCase().trim();
 
 const OwnerStaffPage = () => {
   const [staff, setStaff] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const [error, setError] = useState("");
+
+  const filteredStaff = useMemo(() => {
+    const query = normalizeText(searchTerm);
+    if (!query) return staff;
+
+    return staff.filter((member) => {
+      const name = normalizeText(member.name);
+      const email = normalizeText(member.email);
+      return name.includes(query) || email.includes(query);
+    });
+  }, [staff, searchTerm]);
 
   const load = async () => {
     try {
@@ -19,54 +34,38 @@ const OwnerStaffPage = () => {
     load();
   }, []);
 
-  const updateShift = async (staffId, shift) => {
-    try {
-      await api.patch(`/owner/staff/${staffId}/shift`, shift);
-      await load();
-    } catch (err) {
-      setError(err.response?.data?.message || "Failed to update shift");
-    }
-  };
-
   return (
-    <section>
-      <p className="eyebrow">Team Directory</p>
-      <h2>Staff List & Workshift</h2>
+    <section className="page-section">
+      <header className="section-header">
+        <h2>Staff List</h2>
+      </header>
+
+      <div className="row search-toolbar">
+        <input
+          className="search-input"
+          placeholder="Search staff by name or email"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
+
       {error ? <p className="error">{error}</p> : null}
       <div className="grid">
-        {staff.map((member) => (
+        {filteredStaff.length === 0 ? <p className="menu-placeholder">No staff matched your search.</p> : null}
+        {filteredStaff.map((member) => (
           <article key={member._id} className="card">
-            <h3>{member.name}</h3>
+            <h3>
+              <Link to={`/owner/staff/${member._id}`} className="text-link">{member.name}</Link>
+            </h3>
             <p>{member.email}</p>
             <p>
               {member.shift?.daysPerWeek || 0} days/week | {member.shift?.startTime || "--:--"} - {member.shift?.endTime || "--:--"}
             </p>
-            <ShiftEditor member={member} onSave={updateShift} />
+            <Link to={`/owner/staff/${member._id}`} className="btn btn-secondary">Open Details</Link>
           </article>
         ))}
       </div>
     </section>
-  );
-};
-
-const ShiftEditor = ({ member, onSave }) => {
-  const [daysPerWeek, setDaysPerWeek] = useState(member.shift?.daysPerWeek || 6);
-  const [startTime, setStartTime] = useState(member.shift?.startTime || "09:00");
-  const [endTime, setEndTime] = useState(member.shift?.endTime || "17:00");
-
-  return (
-    <form
-      className="mini-form"
-      onSubmit={(event) => {
-        event.preventDefault();
-        onSave(member._id, { daysPerWeek: Number(daysPerWeek), startTime, endTime });
-      }}
-    >
-      <input type="number" min={1} max={7} value={daysPerWeek} onChange={(e) => setDaysPerWeek(e.target.value)} />
-      <input type="time" value={startTime} onChange={(e) => setStartTime(e.target.value)} />
-      <input type="time" value={endTime} onChange={(e) => setEndTime(e.target.value)} />
-      <button type="submit">Save Shift</button>
-    </form>
   );
 };
 

@@ -64,33 +64,43 @@ const AuthForm = ({ role, mode }) => {
   };
 
   return (
-    <div className="centered narrow auth-wrap">
-      <section className="auth-card">
-        <h1>{role === "owner" ? "Owner" : "Staff"} {isRegister ? "Sign Up" : "Sign In"}</h1>
+    <div className="auth-screen">
+      <section className="auth-side">
+        <p className="eyebrow">TableEase</p>
+        <h2>Restaurant Workforce Platform</h2>
+        <p>{role === "owner" ? "Owner" : "Staff"} portal for daily operations and coordination.</p>
+      </section>
 
-        <form onSubmit={handleSubmit} className="form">
-          {isRegister ? <input name="name" placeholder="Full name" value={form.name} onChange={handleChange} required /> : null}
-          <input name="email" type="email" placeholder="Email" value={form.email} onChange={handleChange} required />
-          <input name="password" type="password" placeholder="Password" value={form.password} onChange={handleChange} required minLength={6} />
+      <section className="auth-main">
+        <div className="auth-card card-panel">
+          <p className="eyebrow">{role === "owner" ? "Owner Portal" : "Staff Portal"}</p>
+          <h1>{isRegister ? "Create Account" : "Welcome Back"}</h1>
+          <p className="lead-text compact">{role === "owner" ? "Owner" : "Staff"} {isRegister ? "Registration" : "Sign In"}</p>
 
-          {isRegister && role === "staff" ? (
-            <>
-              <input name="daysPerWeek" type="number" min={1} max={7} value={form.daysPerWeek} onChange={handleChange} required />
-              <input name="startTime" type="time" value={form.startTime} onChange={handleChange} required />
-              <input name="endTime" type="time" value={form.endTime} onChange={handleChange} required />
-            </>
-          ) : null}
+          <form onSubmit={handleSubmit} className="form">
+            {isRegister ? <input name="name" placeholder="Full name" value={form.name} onChange={handleChange} required /> : null}
+            <input name="email" type="email" placeholder="Email" value={form.email} onChange={handleChange} required />
+            <input name="password" type="password" placeholder="Password" value={form.password} onChange={handleChange} required minLength={6} />
 
-          {error ? <p className="error">{error}</p> : null}
-          <button type="submit" disabled={loading}>{loading ? "Please wait..." : isRegister ? "Register" : "Login"}</button>
-        </form>
+            {isRegister && role === "staff" ? (
+              <>
+                <input name="daysPerWeek" type="number" min={1} max={7} value={form.daysPerWeek} onChange={handleChange} required />
+                <input name="startTime" type="time" value={form.startTime} onChange={handleChange} required />
+                <input name="endTime" type="time" value={form.endTime} onChange={handleChange} required />
+              </>
+            ) : null}
 
-        <div className="row">
-          {isRegister ? (
-            <Link to={`/${role}/login`}>Go to Sign In</Link>
-          ) : (
-            <Link to={`/${role}/register`}>Go to Sign Up</Link>
-          )}
+            {error ? <p className="error">{error}</p> : null}
+            <button type="submit" className="btn btn-primary" disabled={loading}>{loading ? "Please wait..." : isRegister ? "Register" : "Login"}</button>
+          </form>
+
+          <div className="row">
+            {isRegister ? (
+              <Link to={`/${role}/login`} className="text-link">Go to Sign In</Link>
+            ) : (
+              <Link to={`/${role}/register`} className="text-link">Go to Sign Up</Link>
+            )}
+          </div>
         </div>
       </section>
     </div>
